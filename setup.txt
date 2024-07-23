@@ -1,0 +1,43 @@
+# initial setup of C9300 for all usecases
+
+# Model Number: C9300-24UX
+# License: network-advantage
+# SW: 17.07.01, CAT9K_IOSXE
+
+
+conf t
+iox
+interface AppGigabitEthernet1/0/1
+ switchport mode trunk
+
+!--- VLAN 1026 and its subnet 10.10.64.0/24 is accessible via regular data interface
+app-hosting appid guestshell
+ app-vnic AppGigabitEthernet trunk
+  vlan 1026 guest-interface 0
+   guest-ipaddress 10.10.64.10 netmask 255.255.255.128
+ app-default-gateway 10.10.64.1 guest-interface 0
+
+exit
+exit
+
+guestshell enable
+
+!--- switch to gueshell shell
+guestshell
+
+# add DNS server to be able to update packages
+sudo vi /etc/resolv.conf
+nameserver 8.8.8.8
+
+# workaround for YUM obsolete repository
+sudo sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+sudo sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+
+# update packages
+sudo yum update
+
+# reach IOSXE prompt from GuestShell:
+dohost "show version"
+
+# exit GuestShell shell - return to IOSXE prompt
+exit
