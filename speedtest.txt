@@ -1,0 +1,33 @@
+# Perform sppedtest by Ookla from guestshell cli
+
+# install speedtest package
+curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.rpm.sh | sudo bash
+sudo yum install speedtest
+
+# run speedtest
+speedtest
+
+
+
+
+
+
+######################
+### Output example ###
+######################
+
+[guestshell@guestshell ~]$ speedtest
+
+   Speedtest by Ookla
+
+      Server: Slovak Telekom - Bratislava (id: 7069)
+         ISP: VNET a.s.
+Idle Latency:     1.28 ms   (jitter: 0.06ms, low: 1.22ms, high: 1.46ms)
+    Download:   146.00 Mbps (data used: 77.2 MB)                                                   
+                 31.60 ms   (jitter: 3.28ms, low: 1.40ms, high: 44.51ms)
+      Upload:   144.05 Mbps (data used: 156.6 MB)                                                   
+                 25.43 ms   (jitter: 3.23ms, low: 2.28ms, high: 59.00ms)
+ Packet Loss:     0.0%
+  Result URL: https://www.speedtest.net/result/c/ddabc3ef-ac74-471d-86c1-c3c2bd3cfcc6
+[guestshell@guestshell ~]$
+

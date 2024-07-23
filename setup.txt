@@ -4,7 +4,7 @@
 # License: network-advantage
 # SW: 17.07.01, CAT9K_IOSXE
 
-
+!--- from C9300 IOSXE prompt
 conf t
 iox
 interface AppGigabitEthernet1/0/1
