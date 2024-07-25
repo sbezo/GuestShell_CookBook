@@ -1,0 +1,23 @@
+# Perform iperf bandwidth measurements from GuestShell cli
+
+# Install iperf package
+sudo yum install -y iperf
+
+# Run netcat scans:
+iperf -c 10.10.20.161
+# iperf servers runs on peer 10.10.20.161 ('iperf -s')
+
+
+######################
+### Output example ###
+######################
+
+[guestshell@guestshell ~]$ iperf -c 10.10.20.161
+------------------------------------------------------------
+Client connecting to 10.10.20.161, TCP port 5001
+TCP window size: 48.8 KByte (default)
+------------------------------------------------------------
+[  1] local 10.10.64.10 port 55818 connected with 10.10.20.161 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.00-10.03 sec  1.09 GBytes   934 Mbits/sec
+[guestshell@guestshell ~]$

@@ -2,7 +2,7 @@
 
 # Model Number: C9300-24UX
 # License: network-advantage
-# SW: 17.07.01, CAT9K_IOSXE
+# SW: 17.12.3, CAT9K_IOSXE
 
 !--- from C9300 IOSXE prompt
 conf t
@@ -17,8 +17,7 @@ app-hosting appid guestshell
    guest-ipaddress 10.10.64.10 netmask 255.255.255.128
  app-default-gateway 10.10.64.1 guest-interface 0
 
-exit
-exit
+end
 
 guestshell enable
 
@@ -33,7 +32,7 @@ nameserver 8.8.8.8
 sudo sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
 sudo sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
 
-# update packages
+# update packages ???
 sudo yum update
 
 # reach IOSXE prompt from GuestShell:
@@ -41,3 +40,6 @@ dohost "show version"
 
 # exit GuestShell shell - return to IOSXE prompt
 exit
+
+!--- destroy Guesshell
+guestshell destroy

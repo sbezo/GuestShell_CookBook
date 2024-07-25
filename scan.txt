@@ -1,0 +1,50 @@
+# Perform scan for open ports from GuestShell cli
+
+# Note:
+# The only scanner I was able to install is netcat
+# I tried and was not able to install: nmap, unicornscan, masscan
+
+# Install netcat and tcpdump(handy for udp scanning)
+sudo yum install netcat
+sudo yum install tcpdump
+
+# Run netcat scans:
+
+# A, TCP scan, -z scan, -w1 timeout
+netcat -z -w1 10.10.20.161 1-1024
+
+# B, UDP port test, -u udp
+sudo /usr/sbin/tcpdump host 10.10.20.161 &
+netcat -z -u 10.10.20.161 500-501
+
+
+######################
+### Output example ###
+######################
+
+[guestshell@guestshell ~]$ netcat -z -w1 10.10.20.161 1-1024
+Connection to 10.10.20.161 22 port [tcp/ssh] succeeded!
+Connection to 10.10.20.161 179 port [tcp/bgp] succeeded!
+[1]+  Done                    sudo /usr/sbin/tcpdump host 10.10.20.161
+[guestshell@guestshell ~]$ 
+
+
+# UDP 500 (isakmp) is open on target host, it is silent because service expect isakmp message
+# port 501 answers with 'icmp unreachable'
+[guestshell@guestshell ~]$ netcat -z -u 10.10.20.161 500-501
+07:05:43.313670 IP guestshell.42850 > 10.10.20.161.isakmp: [|isakmp]
+07:05:43.313725 IP guestshell.42850 > 10.10.20.161.isakmp: [|isakmp]
+07:05:43.313754 IP guestshell.42850 > 10.10.20.161.isakmp: [|isakmp]
+07:05:43.313770 IP guestshell.42850 > 10.10.20.161.isakmp: [|isakmp]
+Connection to 10.10.20.161 500 port [udp/isakmp] succeeded!
+07:05:43.314223 IP guestshell.54319 > 10.10.20.161.stmf: UDP, length 1
+07:05:43.314250 IP guestshell.54319 > 10.10.20.161.stmf: UDP, length 1
+07:05:43.314267 IP guestshell.54319 > 10.10.20.161.stmf: UDP, length 1
+07:05:43.314282 IP guestshell.54319 > 10.10.20.161.stmf: UDP, length 1
+07:05:43.314481 IP 10.10.20.161 > guestshell: ICMP 10.10.20.161 udp port stmf unreachable, length 37
+07:05:43.314524 IP 10.10.20.161 > guestshell: ICMP 10.10.20.161 udp port stmf unreachable, length 37
+07:05:43.314529 IP 10.10.20.161 > guestshell: ICMP 10.10.20.161 udp port stmf unreachable, length 37
+07:05:43.314532 IP 10.10.20.161 > guestshell: ICMP 10.10.20.161 udp port stmf unreachable, length 37
+Connection to 10.10.20.161 501 port [udp/stmf] succeeded!
+[guestshell@guestshell ~]$ 
+

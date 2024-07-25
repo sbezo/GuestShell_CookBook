@@ -1,15 +1,11 @@
-# Perform sppedtest by Ookla from guestshell cli
+# Perform sppedtest by Ookla from GuestShell cli
 
-# install speedtest package
+# Install speedtest package
 curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.rpm.sh | sudo bash
 sudo yum install speedtest
 
-# run speedtest
+# Run speedtest
 speedtest
-
-
-
-
 
 
 ######################
@@ -28,6 +24,6 @@ Idle Latency:     1.28 ms   (jitter: 0.06ms, low: 1.22ms, high: 1.46ms)
       Upload:   144.05 Mbps (data used: 156.6 MB)                                                   
                  25.43 ms   (jitter: 3.23ms, low: 2.28ms, high: 59.00ms)
  Packet Loss:     0.0%
-  Result URL: https://www.speedtest.net/result/c/ddabc3ef-ac74-471d-86c1-c3c2bd3cfcc6
+
 [guestshell@guestshell ~]$
 
