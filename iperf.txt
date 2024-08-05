@@ -3,7 +3,7 @@
 # Install iperf package
 sudo yum install -y iperf
 
-# Run netcat scans:
+# Run iperf test:
 iperf -c 10.10.20.161
 # iperf servers runs on peer 10.10.20.161 ('iperf -s')
 

@@ -16,7 +16,16 @@ app-hosting appid guestshell
   vlan 1026 guest-interface 0
    guest-ipaddress 10.10.64.10 netmask 255.255.255.128
  app-default-gateway 10.10.64.1 guest-interface 0
+end
 
+!--- if needed, next interface in another VLAN 1027 can be configured -> usecase: guestshell as jumphost to remote host without default GW
+app-hosting appid guestshell
+ app-vnic AppGigabitEthernet trunk
+  vlan 1026 guest-interface 0
+   guest-ipaddress 10.10.64.10 netmask 255.255.255.128
+  vlan 1027 guest-interface 1
+   guest-ipaddress 10.10.65.10 netmask 255.255.255.128
+ app-default-gateway 10.10.64.1 guest-interface 0
 end
 
 guestshell enable
@@ -32,8 +41,6 @@ nameserver 8.8.8.8
 sudo sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
 sudo sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
 
-# update packages ???
-sudo yum update
 
 # reach IOSXE prompt from GuestShell:
 dohost "show version"

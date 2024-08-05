@@ -1,0 +1,99 @@
+# File transfers via different protocols - FTP, SFTP, SCP, TFTP
+
+# create users for file transfer, set password
+sudo useradd -m transfer
+sudo passwd transfer
+
+# install & run FTP server (SFTP,SCP run over SSH and are already enabled)
+sudo yum install proftpd
+sudo systemctl start proftpd
+
+# Install & run TFTP via pip (I was not able to run TFTP server via yum install, or GCC compile because of Guestshell restrictions)
+sudo pip3 install tftpy
+sudo chmod 777 /home/transfer
+cd /home/transfer
+sudo /usr/local/bin/py3tftp -p 69
+
+
+######################
+### Output example ###
+######################
+
+# FTP upload (IOS client)
+C3560G#copy flash:vlan.dat ftp://transfer:xxxxxx@10.10.64.10
+Address or name of remote host [10.10.64.10]? 
+Destination filename [vlan.dat]? 
+Writing vlan.dat !
+4336 bytes copied in 0.092 secs (47130 bytes/sec)
+C3560G#
+
+# SFTP download & upload (IOSXE client)
+CSR1000v#copy sftp://transfer@10.10.64.10/README.md flash:  
+Destination filename [README.md]? 
+%Warning:There is a file already existing with this name 
+Do you want to over write? [confirm]
+Password: 
+!
+675 bytes copied in 3.561 secs (190 bytes/sec)
+
+CSR1000v#copy flash:/README.md sftp://transfer@10.10.64.10            
+Address or name of remote host [10.10.64.10]? 
+Destination username [transfer]? 
+Destination filename [README.md]? 
+Password: 
+
+SFTP send: Writing to /home/transfer/README.md size 675
+!
+675 bytes copied in 2.840 secs (238 bytes/sec)
+CSR1000v#
+
+# SCP download & upload (IOSXE client)
+CSR1000v#copy scp://transfer@10.10.64.10/test.txt flash:
+Destination filename [test.txt]? 
+Password: 
+ Sending file modes: C0644 16 test.txt
+!
+16 bytes copied in 3.032 secs (5 bytes/sec)
+
+CSR1000v#copy flash:/test.txt scp://transfer@10.10.64.10         
+Address or name of remote host [10.10.64.10]? 
+Destination username [transfer]? 
+Destination filename [test.txt]? 
+Writing test.txt 
+Password: 
+ Sink: C0644 16 test.txt
+!
+16 bytes copied in 3.399 secs (5 bytes/sec)
+CSR1000v#
+
+# SFTP download & upload (MAC terminal)
+stefanbezo@Stefans-MacBook-Pro Downloads % sftp transfer@10.10.64.10
+transfer@10.10.64.10's password: 
+client_input_hostkeys: received duplicated ssh-rsa host key
+Connected to 10.10.64.10.
+sftp> get README.md
+Fetching /home/transfer/README.md to README.md
+README.md                                                                             100%  675   240.3KB/s   00:00    
+sftp> put test.txt
+Uploading test.txt to /home/transfer/test.txt
+test.txt                                                                              100%   16    12.5KB/s   00:00    
+sftp> quit
+stefanbezo@Stefans-MacBook-Pro Downloads %
+
+# TFTP download & upload (IOSXE client)
+CSR1000v#copy flash://csrlxc-cfg.log tftp://10.10.64.10
+Address or name of remote host [10.10.64.10]? 
+Destination filename [csrlxc-cfg.log]? 
+!!
+157 bytes copied in 0.018 secs (8722 bytes/sec)
+CSR1000v#
+CSR1000v#copy tftp://10.10.64.10/CAP-B.pcap flash:
+Destination filename [CAP-B.pcap]? 
+Accessing tftp://10.10.64.10/CAP-B.pcap...
+Loading CAP-B.pcap from 10.10.64.10 (via GigabitEthernet1): !!!!!
+[OK - 1096704 bytes]
+
+1096704 bytes copied in 1.781 secs (615780 bytes/sec)
+CSR1000v#
+
+

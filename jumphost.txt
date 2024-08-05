@@ -1,0 +1,23 @@
+# Allows ssh tunneling via jumphost. Tested for ssh and http protocols
+
+# It is usefull when you have direct access only to switch. Switch can be used as a jumphost to another servers.
+# It could also solve issue with remote server without GW. (another NIC of Guestshell can be used) 
+
+# create users for ssh tunneling
+sudo useradd -m transfer
+sudo passwd transfer
+
+# tunnel ssh/http via jumphost (guestshell) 
+# 10.10.64.10 is guestshell IP -jumphost
+# 'transfer' is user on guestshell
+# 10.10.20.161 is remote SSH/HTTP server(listens on port 22/80)
+ssh -N transfer@10.10.64.10 -L 2222:10.10.20.161:22
+ssh -N transfer@10.10.64.10 -L 8080:10.10.20.161:80
+ssh -N transfer@10.10.64.10 -L 2222:10.10.65.1:22
+
+# '2222' is local port on laptop used for SSH via Jumphost
+# '8080' is local port on laptop used for HTTP via Jumphost
+
+# access remote SSH/HTTP from laptop
+ssh ubuntu@localhost -p 2222
+# open browser 'localhost:8080'

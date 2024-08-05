@@ -5,8 +5,8 @@
 # I tried and was not able to install: nmap, unicornscan, masscan
 
 # Install netcat and tcpdump(handy for udp scanning)
-sudo yum install netcat
-sudo yum install tcpdump
+sudo yum install -y netcat
+sudo yum install -y tcpdump
 
 # Run netcat scans:
 
