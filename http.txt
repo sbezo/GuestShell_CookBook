@@ -12,5 +12,5 @@ cat > index.html
 </html> 
 
 # serve page through python's http.server module
-# without index.html page serves conten of actual directory for download
+# without index.html page serves content of actual directory for download
 sudo python3 -m http.server 80
