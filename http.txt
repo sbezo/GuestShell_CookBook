@@ -1,6 +1,6 @@
 # Run simple web page
 
-#create index.html page
+#create index.html page in current directory
 cat > index.html
 
 <!DOCTYPE html>

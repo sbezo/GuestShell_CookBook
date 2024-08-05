@@ -1,6 +1,6 @@
-# File transfers via different protocols - FTP, SFTP, SCP, TFTP
+# File transfer via different protocols - FTP, SFTP, SCP, TFTP
 
-# create users for file transfer, set password
+# create user and his home directory, set password
 sudo useradd -m transfer
 sudo passwd transfer
 
